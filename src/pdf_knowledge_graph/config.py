@@ -44,7 +44,7 @@ class Settings(BaseSettings):
         default="neo4j://127.0.0.1:7687",
         description="Neo4j database URI",
     )
-    neo4j_user: str = Field(
+    neo4j_username: str = Field(
         default="neo4j",
         description="Neo4j username",
     )

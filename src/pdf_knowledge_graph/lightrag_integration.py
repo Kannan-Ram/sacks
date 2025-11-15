@@ -9,7 +9,8 @@ from pathlib import Path
 from typing import Any, Callable, Dict, Optional
 
 from lightrag import LightRAG, QueryParam
-from lightrag.llm import openai_complete_if_cache, openai_embedding
+from lightrag.kg.shared_storage import initialize_pipeline_status
+from openai import AsyncOpenAI
 
 from .config import settings
 from .logger import setup_logger
@@ -46,16 +47,27 @@ class LightRAGProcessor:
             logger.info("Initializing LightRAG with local LLM configuration")
 
             # Configure LightRAG with OpenAI-compatible local LLM
+            # Note: Neo4j configuration is read from environment variables:
+            # NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD
             self._rag = LightRAG(
                 working_dir=str(self.working_dir),
                 llm_model_func=self._create_llm_func(),
                 embedding_func=self._create_embedding_func(),
-                # Neo4j configuration
                 graph_storage="Neo4JStorage",
-                neo4j_uri=settings.neo4j_uri,
-                neo4j_username=settings.neo4j_user,
-                neo4j_password=settings.neo4j_password,
+                # Increase timeouts for local LLM processing
+                default_llm_timeout=600,  # 10 minutes for LLM calls
+                # Smaller chunk size for better processing with local models
+                chunk_token_size=800,  # Reduced from default 1200
+                chunk_overlap_token_size=50,  # Reduced from default 100
             )
+
+            # Initialize storages - required for LightRAG to function
+            logger.info("Initializing LightRAG storages")
+            await self._rag.initialize_storages()
+
+            # Initialize pipeline status - required for processing operations
+            logger.info("Initializing pipeline status")
+            await initialize_pipeline_status()
 
             logger.info("LightRAG initialized successfully")
 
@@ -69,6 +81,10 @@ class LightRAGProcessor:
         Returns:
             LLM function callable
         """
+        client = AsyncOpenAI(
+            api_key=settings.llm_api_key,
+            base_url=settings.llm_base_url,
+        )
 
         async def llm_func(
             prompt: str,
@@ -77,15 +93,31 @@ class LightRAGProcessor:
             **kwargs: Any,
         ) -> str:
             """LLM completion function using local API."""
-            return await openai_complete_if_cache(
+            messages = []
+
+            if system_prompt:
+                messages.append({"role": "system", "content": system_prompt})
+
+            # Add history messages if provided
+            messages.extend(history_messages)
+
+            # Add current prompt
+            messages.append({"role": "user", "content": prompt})
+
+            # Filter out LightRAG-specific kwargs that OpenAI client doesn't accept
+            lightrag_specific_params = {'hashing_kv', 'keyword_extraction'}
+            filtered_kwargs = {
+                k: v for k, v in kwargs.items()
+                if k not in lightrag_specific_params
+            }
+
+            response = await client.chat.completions.create(
                 model=settings.llm_model_name,
-                prompt=prompt,
-                system_prompt=system_prompt,
-                history_messages=history_messages,
-                api_key=settings.llm_api_key,
-                base_url=settings.llm_base_url,
-                **kwargs,
+                messages=messages,
+                **filtered_kwargs,
             )
+
+            return response.choices[0].message.content
 
         return llm_func
 
@@ -93,17 +125,25 @@ class LightRAGProcessor:
         """Create embedding function for LightRAG using local API.
 
         Returns:
-            Embedding function callable
+            Embedding function callable with embedding_dim attribute
         """
+        client = AsyncOpenAI(
+            api_key=settings.llm_api_key,
+            base_url=settings.llm_base_url,
+        )
 
         async def embedding_func(texts: list[str]) -> list[list[float]]:
             """Embedding function using local API."""
-            return await openai_embedding(
-                texts=texts,
+            response = await client.embeddings.create(
                 model=settings.llm_embedding_model,
-                api_key=settings.llm_api_key,
-                base_url=settings.llm_base_url,
+                input=texts,
             )
+
+            return [item.embedding for item in response.data]
+
+        # Set embedding dimension attribute required by LightRAG
+        # nomic-embed-text-v1.5 produces 768-dimensional embeddings
+        embedding_func.embedding_dim = 768
 
         return embedding_func
 

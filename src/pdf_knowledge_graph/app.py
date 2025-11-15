@@ -11,7 +11,7 @@ from uuid import UUID
 import httpx
 import streamlit as st
 
-from .config import settings
+from pdf_knowledge_graph.config import settings
 
 # Page configuration
 st.set_page_config(

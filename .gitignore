@@ -42,6 +42,7 @@ uploads/
 working/
 *.pdf
 *.log
+test_document.*
 
 # OS
 .DS_Store

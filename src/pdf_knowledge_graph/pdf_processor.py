@@ -93,14 +93,15 @@ class PDFProcessor:
         """
         try:
             doc = fitz.open(pdf_path)
+            num_pages = len(doc)
             text_parts = []
 
-            for page_num in range(len(doc)):
+            for page_num in range(num_pages):
                 page = doc[page_num]
                 text_parts.append(page.get_text())
 
             doc.close()
-            return "\n".join(text_parts), len(doc)
+            return "\n".join(text_parts), num_pages
 
         except Exception as e:
             logger.error(f"Error extracting text directly: {e}")

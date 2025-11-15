@@ -28,11 +28,11 @@ class Neo4jClient:
 
         Args:
             uri: Neo4j URI (defaults to settings.neo4j_uri)
-            user: Neo4j username (defaults to settings.neo4j_user)
+            user: Neo4j username (defaults to settings.neo4j_username)
             password: Neo4j password (defaults to settings.neo4j_password)
         """
         self.uri = uri or settings.neo4j_uri
-        self.user = user or settings.neo4j_user
+        self.user = user or settings.neo4j_username
         self.password = password or settings.neo4j_password
         self._driver: Optional[Driver] = None
 
