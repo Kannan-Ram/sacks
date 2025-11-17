@@ -40,6 +40,8 @@ venv.bak/
 # Application specific
 uploads/
 working/
+working_sac/
+sac_docs/
 *.pdf
 *.log
 test_document.*

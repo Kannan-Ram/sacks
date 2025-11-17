@@ -5,9 +5,10 @@ processing them into knowledge graphs, and tracking job status.
 """
 
 import asyncio
+from contextlib import asynccontextmanager
 from datetime import datetime
 from pathlib import Path
-from typing import Dict
+from typing import AsyncIterator, Dict
 from uuid import UUID, uuid4
 
 import aiofiles
@@ -29,11 +30,45 @@ from .neo4j_client import Neo4jClient
 
 logger = setup_logger(__name__)
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+    """Application lifespan manager for startup and shutdown events."""
+    # Startup
+    logger.info("Starting PDF Knowledge Graph API")
+    logger.info(f"Upload directory: {settings.upload_dir}")
+    logger.info(f"Working directory: {settings.active_working_dir}")
+
+    # Log SAC mode if enabled
+    if settings.use_sac_mode:
+        logger.info(f"SAC Mode: ENABLED")
+        logger.info(f"Workspace: {settings.active_workspace}")
+        logger.info(f"Chunk size optimized for product documentation")
+    else:
+        logger.info(f"SAC Mode: DISABLED")
+
+    # Verify Neo4j connection
+    try:
+        with Neo4jClient() as client:
+            if client.verify_connection():
+                logger.info("Neo4j connection verified")
+            else:
+                logger.warning("Could not verify Neo4j connection")
+    except Exception as e:
+        logger.error(f"Neo4j connection failed: {e}")
+
+    yield
+
+    # Shutdown
+    logger.info("Shutting down PDF Knowledge Graph API")
+
+
 # FastAPI app
 app = FastAPI(
     title="PDF Knowledge Graph API",
     description="Build knowledge graphs from PDF documents using LightRAG and Neo4j",
     version="0.1.0",
+    lifespan=lifespan,
 )
 
 # CORS middleware
@@ -50,30 +85,6 @@ jobs: Dict[UUID, JobInfo] = {}
 
 # Processors
 pdf_processor = PDFProcessor()
-
-
-@app.on_event("startup")
-async def startup_event() -> None:
-    """Initialize application on startup."""
-    logger.info("Starting PDF Knowledge Graph API")
-    logger.info(f"Upload directory: {settings.upload_dir}")
-    logger.info(f"Working directory: {settings.working_dir}")
-
-    # Verify Neo4j connection
-    try:
-        with Neo4jClient() as client:
-            if client.verify_connection():
-                logger.info("Neo4j connection verified")
-            else:
-                logger.warning("Could not verify Neo4j connection")
-    except Exception as e:
-        logger.error(f"Neo4j connection failed: {e}")
-
-
-@app.on_event("shutdown")
-async def shutdown_event() -> None:
-    """Cleanup on application shutdown."""
-    logger.info("Shutting down PDF Knowledge Graph API")
 
 
 @app.get("/")

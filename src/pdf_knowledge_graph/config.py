@@ -63,6 +63,24 @@ class Settings(BaseSettings):
         description="Working directory for LightRAG",
     )
 
+    # SAC-specific Configuration
+    use_sac_mode: bool = Field(
+        default=False,
+        description="Use SAC-optimized settings for product documentation",
+    )
+    sac_working_dir: Path = Field(
+        default=Path("./working_sac"),
+        description="Working directory for SAC knowledge graph",
+    )
+    sac_workspace: str = Field(
+        default="sac-product-docs",
+        description="Workspace namespace for SAC documents",
+    )
+    sac_neo4j_database: str = Field(
+        default="sac-kg",
+        description="Separate Neo4j database for SAC knowledge graph",
+    )
+
     # Logging
     log_level: str = Field(
         default="INFO",
@@ -83,7 +101,7 @@ class Settings(BaseSettings):
         description="Streamlit port",
     )
 
-    @field_validator("upload_dir", "working_dir")
+    @field_validator("upload_dir", "working_dir", "sac_working_dir")
     @classmethod
     def create_directory(cls, v: Path) -> Path:
         """Ensure directory exists."""
@@ -99,6 +117,21 @@ class Settings(BaseSettings):
         if v_upper not in valid_levels:
             raise ValueError(f"Log level must be one of {valid_levels}")
         return v_upper
+
+    @property
+    def active_working_dir(self) -> Path:
+        """Get the active working directory based on SAC mode."""
+        return self.sac_working_dir if self.use_sac_mode else self.working_dir
+
+    @property
+    def active_workspace(self) -> Optional[str]:
+        """Get the active workspace namespace (SAC mode only)."""
+        return self.sac_workspace if self.use_sac_mode else None
+
+    @property
+    def active_neo4j_database(self) -> str:
+        """Get the active Neo4j database based on SAC mode."""
+        return self.sac_neo4j_database if self.use_sac_mode else "chunk-entity-relation"
 
 
 # Global settings instance

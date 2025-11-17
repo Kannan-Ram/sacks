@@ -33,33 +33,56 @@ class LightRAGProcessor:
             working_dir: Working directory for LightRAG storage
             neo4j_client: Neo4j client instance (optional, will create if not provided)
         """
-        self.working_dir = working_dir or settings.working_dir
+        self.working_dir = working_dir or settings.active_working_dir
         self.working_dir.mkdir(parents=True, exist_ok=True)
 
         self.neo4j_client = neo4j_client
         self._rag: Optional[LightRAG] = None
 
-        logger.info(f"LightRAGProcessor initialized with working_dir: {self.working_dir}")
+        mode = "SAC" if settings.use_sac_mode else "General"
+        logger.info(f"LightRAGProcessor initialized with working_dir: {self.working_dir} (Mode: {mode})")
 
     async def initialize(self) -> None:
         """Initialize LightRAG instance with configuration."""
         try:
             logger.info("Initializing LightRAG with local LLM configuration")
 
+            # Set Neo4j database for LightRAG (read from environment)
+            import os
+            os.environ["NEO4J_DATABASE"] = settings.active_neo4j_database
+            logger.info(f"Using Neo4j database: {settings.active_neo4j_database}")
+
             # Configure LightRAG with OpenAI-compatible local LLM
             # Note: Neo4j configuration is read from environment variables:
-            # NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD
-            self._rag = LightRAG(
-                working_dir=str(self.working_dir),
-                llm_model_func=self._create_llm_func(),
-                embedding_func=self._create_embedding_func(),
-                graph_storage="Neo4JStorage",
-                # Increase timeouts for local LLM processing
-                default_llm_timeout=600,  # 10 minutes for LLM calls
-                # Smaller chunk size for better processing with local models
-                chunk_token_size=800,  # Reduced from default 1200
-                chunk_overlap_token_size=50,  # Reduced from default 100
-            )
+            # NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD, NEO4J_DATABASE
+
+            # Optimize chunk sizes based on mode
+            if settings.use_sac_mode:
+                # Product documentation: optimized for speed while staying within embedding limits
+                chunk_size = 2400  # Larger chunks for faster processing (nomic-embed limit: 8192)
+                overlap_size = 300  # Proportional overlap to capture feature relationships
+                logger.info("Using SAC-optimized settings for product documentation")
+            else:
+                # General documents: balanced chunks
+                chunk_size = 1600
+                overlap_size = 200
+
+            lightrag_kwargs = {
+                "working_dir": str(self.working_dir),
+                "llm_model_func": self._create_llm_func(),
+                "embedding_func": self._create_embedding_func(),
+                "graph_storage": "Neo4JStorage",
+                "default_llm_timeout": 600,  # 10 minutes for LLM calls
+                "chunk_token_size": chunk_size,
+                "chunk_overlap_token_size": overlap_size,
+            }
+
+            # Add workspace for SAC mode (creates separate namespace in Neo4j)
+            if settings.active_workspace:
+                lightrag_kwargs["workspace"] = settings.active_workspace
+                logger.info(f"Using workspace: {settings.active_workspace}")
+
+            self._rag = LightRAG(**lightrag_kwargs)
 
             # Initialize storages - required for LightRAG to function
             logger.info("Initializing LightRAG storages")
@@ -117,7 +140,20 @@ class LightRAGProcessor:
                 **filtered_kwargs,
             )
 
-            return response.choices[0].message.content
+            content = response.choices[0].message.content
+
+            # Filter out reasoning artifacts like [THINK] tags
+            if content:
+                import re
+                # Remove [THINK]...[/THINK] blocks
+                content = re.sub(r'\[THINK\].*?\[/THINK\]', '', content, flags=re.DOTALL | re.IGNORECASE)
+                # Remove standalone [THINK] paragraphs (no closing tag)
+                content = re.sub(r'\[THINK\][^\[]*?(?=\n\n|\Z)', '', content, flags=re.DOTALL | re.IGNORECASE)
+                # Clean up extra whitespace
+                content = re.sub(r'\n\s*\n\s*\n', '\n\n', content)
+                content = content.strip()
+
+            return content
 
         return llm_func
 
