@@ -22,10 +22,10 @@ class SACChatbot:
         llm_base_url: str = "http://127.0.0.1:1234/v1",
         llm_model: str = "mistralai/magistral-small-2509",
         llm_api_key: str = "placeholder-api-key",
-        neo4j_uri: str = "bolt://127.0.0.1:7687",
+        neo4j_uri: str = "neo4j+s://304ad687.databases.neo4j.io",
         neo4j_user: str = "neo4j",
-        neo4j_password: str = "Password1",
-        neo4j_database: str = "sac-top-kg",
+        neo4j_password: str = "f3nMzDC7pdFWoB9dqR_ajS37Vr2KNiHTNDetbCoo0rk",
+        neo4j_database: str = "neo4j",
         temperature: float = 0.7,
         max_tokens: int = 1000
     ):

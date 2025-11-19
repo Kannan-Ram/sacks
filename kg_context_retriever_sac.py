@@ -1,8 +1,7 @@
 """
-Knowledge Graph Context Retriever for Rakshit's Graph
+Knowledge Graph Context Retriever for SAC Chatbot
 
-Retrieves relevant context from the Neo4j knowledge graph with entity-based schema.
-This version is optimized for graphs where entities use 'id' property and multiple labels.
+Retrieves relevant context from the Neo4j knowledge graph based on user queries.
 """
 
 import logging
@@ -54,7 +53,7 @@ class KGContextRetriever:
             'new', 'test', 'scenario', 'like', 'something', 'that'
         }
 
-        # Extract words
+        # Extract words (handle multi-word terms)
         words = re.findall(r'\b[A-Z][a-z]*(?:\s+[A-Z][a-z]*)*\b|\b[a-z]+\b', query)
 
         # Filter stop words and short words
@@ -67,7 +66,7 @@ class KGContextRetriever:
 
     def search_entities(self, keywords: List[str], limit: int = 10) -> List[Dict[str, Any]]:
         """
-        Search for entities matching keywords using 'id' property.
+        Search for entities matching keywords.
 
         Args:
             keywords: List of keywords to search for
@@ -83,113 +82,125 @@ class KGContextRetriever:
         pattern = '|'.join([f'(?i).*{re.escape(kw)}.*' for kw in keywords])
 
         query = """
-        MATCH (n:__Entity__)
-        WHERE n.id =~ $pattern
-        RETURN n.id as id, labels(n) as labels
+        MATCH (n:Entity)
+        WHERE n.name =~ $pattern
+        RETURN n.name as name, n.type as type
         LIMIT $limit
         """
 
         with self.driver.session(database=self.database) as session:
             result = session.run(query, pattern=pattern, limit=limit)
-            entities = []
-            for record in result:
-                # Filter out __Entity__ from labels to get actual type
-                labels = [label for label in record['labels'] if label != '__Entity__']
-                entities.append({
-                    'id': record['id'],
-                    'type': ', '.join(labels) if labels else 'Entity'
-                })
+            entities = [dict(record) for record in result]
 
         logger.info(f"Found {len(entities)} entities for keywords: {keywords}")
         return entities
 
-    def get_direct_relationships(self, entity_id: str) -> List[Dict[str, Any]]:
+    def get_entity_relationships(
+        self,
+        entity_name: str,
+        max_depth: int = 2
+    ) -> List[Dict[str, Any]]:
+        """
+        Get all relationships for a given entity up to max_depth.
+
+        Args:
+            entity_name: Name of the entity
+            max_depth: Maximum relationship depth (1 or 2)
+
+        Returns:
+            List of relationships with source, relation, target, and metadata
+        """
+        query = f"""
+        MATCH path = (n:Entity {{name: $entity_name}})-[r:RELATES*1..{max_depth}]-(m:Entity)
+        RETURN
+            [node in nodes(path) | {{name: node.name, type: node.type}}] as nodes,
+            [rel in relationships(path) | {{
+                type: rel.type,
+                confidence: rel.confidence,
+                provenance: rel.provenance
+            }}] as relationships
+        LIMIT 50
+        """
+
+        with self.driver.session(database=self.database) as session:
+            result = session.run(query, entity_name=entity_name)
+            paths = [dict(record) for record in result]
+
+        logger.info(f"Found {len(paths)} relationship paths for '{entity_name}'")
+        return paths
+
+    def get_direct_relationships(self, entity_name: str) -> List[Dict[str, Any]]:
         """
         Get direct (1-hop) relationships for an entity.
 
         Args:
-            entity_id: ID of the entity
+            entity_name: Name of the entity
 
         Returns:
             List of direct relationships
         """
         query = """
-        MATCH (source:__Entity__ {id: $entity_id})-[r]->(target:__Entity__)
+        MATCH (source:Entity {name: $entity_name})-[r:RELATES]->(target:Entity)
         RETURN
-            source.id as source,
-            labels(source) as source_labels,
-            type(r) as relation,
-            target.id as target,
-            labels(target) as target_labels
-        ORDER BY relation
-        LIMIT 20
+            source.name as source,
+            source.type as source_type,
+            r.type as relation,
+            target.name as target,
+            target.type as target_type,
+            r.confidence as confidence,
+            r.provenance as provenance
+        ORDER BY r.confidence DESC
         """
 
         with self.driver.session(database=self.database) as session:
-            result = session.run(query, entity_id=entity_id)
-            relationships = []
-            for record in result:
-                # Get actual types (remove __Entity__ label)
-                source_types = [l for l in record['source_labels'] if l != '__Entity__']
-                target_types = [l for l in record['target_labels'] if l != '__Entity__']
-
-                relationships.append({
-                    'source': record['source'],
-                    'source_type': ', '.join(source_types) if source_types else 'Entity',
-                    'relation': record['relation'],
-                    'target': record['target'],
-                    'target_type': ', '.join(target_types) if target_types else 'Entity'
-                })
+            result = session.run(query, entity_name=entity_name)
+            relationships = [dict(record) for record in result]
 
         return relationships
 
     def get_related_entities(
         self,
-        entity_id: str,
+        entity_name: str,
         relation_type: Optional[str] = None
     ) -> List[Dict[str, Any]]:
         """
         Get entities related to a given entity, optionally filtered by relation type.
 
         Args:
-            entity_id: ID of the entity
-            relation_type: Optional relation type filter
+            entity_name: Name of the entity
+            relation_type: Optional relation type filter (e.g., 'CONTAINS', 'SUPPORTS')
 
         Returns:
             List of related entities
         """
         if relation_type:
             query = """
-            MATCH (n:__Entity__ {id: $entity_id})-[r]->(m:__Entity__)
-            WHERE type(r) = $relation_type
+            MATCH (n:Entity {name: $entity_name})-[r:RELATES {type: $relation_type}]-(m:Entity)
             RETURN DISTINCT
-                m.id as id,
-                labels(m) as labels,
-                type(r) as relation
+                m.name as name,
+                m.type as type,
+                r.type as relation,
+                r.confidence as confidence
+            ORDER BY r.confidence DESC
             LIMIT 20
             """
-            params = {"entity_id": entity_id, "relation_type": relation_type}
+            params = {"entity_name": entity_name, "relation_type": relation_type}
         else:
             query = """
-            MATCH (n:__Entity__ {id: $entity_id})-[r]-(m:__Entity__)
+            MATCH (n:Entity {name: $entity_name})-[r:RELATES]-(m:Entity)
             RETURN DISTINCT
-                m.id as id,
-                labels(m) as labels,
-                type(r) as relation
+                m.name as name,
+                m.type as type,
+                r.type as relation,
+                r.confidence as confidence
+            ORDER BY r.confidence DESC
             LIMIT 20
             """
-            params = {"entity_id": entity_id}
+            params = {"entity_name": entity_name}
 
         with self.driver.session(database=self.database) as session:
             result = session.run(query, **params)
-            related = []
-            for record in result:
-                entity_types = [l for l in record['labels'] if l != '__Entity__']
-                related.append({
-                    'id': record['id'],
-                    'type': ', '.join(entity_types) if entity_types else 'Entity',
-                    'relation': record['relation']
-                })
+            related = [dict(record) for record in result]
 
         return related
 
@@ -214,22 +225,23 @@ class KGContextRetriever:
             return "No relevant context found in the knowledge graph."
 
         # Build context from entities and their relationships
-        context_parts = ["Based on the Knowledge Graph:\n"]
+        context_parts = ["Based on the SAC Knowledge Graph:\n"]
 
         for entity in entities:
-            entity_id = entity['id']
+            entity_name = entity['name']
             entity_type = entity['type']
 
-            context_parts.append(f"\n**{entity_id}** (Type: {entity_type}):")
+            context_parts.append(f"\n**{entity_name}** (Type: {entity_type}):")
 
             # Get direct relationships
-            relationships = self.get_direct_relationships(entity_id)
+            relationships = self.get_direct_relationships(entity_name)
 
             if relationships:
                 for rel in relationships[:10]:  # Limit to top 10 relationships
                     context_parts.append(
                         f"  - {rel['relation']} → {rel['target']} "
-                        f"({rel['target_type']})"
+                        f"({rel['target_type']}) "
+                        f"[Confidence: {rel['confidence']:.2f}, Source: {rel['provenance']}]"
                     )
             else:
                 context_parts.append("  - No direct relationships found")
@@ -239,64 +251,51 @@ class KGContextRetriever:
 
         return context
 
-    def get_entity_neighborhood(self, entity_id: str) -> Dict[str, Any]:
+    def get_entity_neighborhood(self, entity_name: str) -> Dict[str, Any]:
         """
         Get comprehensive neighborhood information for an entity.
 
         Args:
-            entity_id: ID of the entity
+            entity_name: Name of the entity
 
         Returns:
             Dictionary with entity info and all its relationships
         """
         # Get entity info
         query = """
-        MATCH (n:__Entity__ {id: $entity_id})
-        RETURN n.id as id, labels(n) as labels
+        MATCH (n:Entity {name: $entity_name})
+        RETURN n.name as name, n.type as type
         """
 
         with self.driver.session(database=self.database) as session:
-            result = session.run(query, entity_id=entity_id)
+            result = session.run(query, entity_name=entity_name)
             entity_info = result.single()
 
             if not entity_info:
                 return {}
 
-            entity_types = [l for l in entity_info['labels'] if l != '__Entity__']
-            entity_dict = {
-                'id': entity_info['id'],
-                'type': ', '.join(entity_types) if entity_types else 'Entity'
-            }
+            entity_dict = dict(entity_info)
 
         # Get outgoing relationships
-        outgoing = self.get_direct_relationships(entity_id)
+        outgoing = self.get_direct_relationships(entity_name)
 
         # Get incoming relationships
         query = """
-        MATCH (source:__Entity__)-[r]->(target:__Entity__ {id: $entity_id})
+        MATCH (source:Entity)-[r:RELATES]->(target:Entity {name: $entity_name})
         RETURN
-            source.id as source,
-            labels(source) as source_labels,
-            type(r) as relation,
-            target.id as target,
-            labels(target) as target_labels
-        LIMIT 20
+            source.name as source,
+            source.type as source_type,
+            r.type as relation,
+            target.name as target,
+            target.type as target_type,
+            r.confidence as confidence,
+            r.provenance as provenance
+        ORDER BY r.confidence DESC
         """
 
         with self.driver.session(database=self.database) as session:
-            result = session.run(query, entity_id=entity_id)
-            incoming = []
-            for record in result:
-                source_types = [l for l in record['source_labels'] if l != '__Entity__']
-                target_types = [l for l in record['target_labels'] if l != '__Entity__']
-
-                incoming.append({
-                    'source': record['source'],
-                    'source_type': ', '.join(source_types) if source_types else 'Entity',
-                    'relation': record['relation'],
-                    'target': record['target'],
-                    'target_type': ', '.join(target_types) if target_types else 'Entity'
-                })
+            result = session.run(query, entity_name=entity_name)
+            incoming = [dict(record) for record in result]
 
         return {
             "entity": entity_dict,
@@ -310,20 +309,12 @@ if __name__ == "__main__":
     retriever = KGContextRetriever()
 
     try:
-        # Test queries
-        test_queries = [
-            "What are the features of SAP Analytics Cloud?",
-            "Tell me about Planning",
-            "Generate test scenario for Story"
-        ]
+        # Test query
+        test_query = "Generate a test scenario for geo maps"
+        print(f"Query: {test_query}\n")
 
-        for test_query in test_queries:
-            print(f"\n{'='*80}")
-            print(f"Query: {test_query}")
-            print(f"{'='*80}\n")
-
-            context = retriever.build_context(test_query, max_entities=3)
-            print(context)
+        context = retriever.build_context(test_query)
+        print(context)
 
     finally:
         retriever.close()

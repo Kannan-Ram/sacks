@@ -61,10 +61,10 @@ def initialize_chatbot():
     return SACChatbot(
         llm_base_url=os.getenv("LLM_BASE_URL", "http://127.0.0.1:1234/v1"),
         llm_model=os.getenv("LLM_MODEL_NAME", "mistralai/magistral-small-2509"),
-        neo4j_uri=os.getenv("NEO4J_URI", "bolt://127.0.0.1:7687"),
+        neo4j_uri=os.getenv("NEO4J_URI", "neo4j+s://304ad687.databases.neo4j.io"),
         neo4j_user=os.getenv("NEO4J_USERNAME", "neo4j"),
-        neo4j_password=os.getenv("NEO4J_PASSWORD", "Password1"),
-        neo4j_database="sac-top-kg"
+        neo4j_password=os.getenv("NEO4J_PASSWORD", "f3nMzDC7pdFWoB9dqR_ajS37Vr2KNiHTNDetbCoo0rk"),
+        neo4j_database=os.getenv("NEO4J_DATABASE", "neo4j")
     )
 
 
