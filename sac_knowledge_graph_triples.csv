@@ -1,0 +1,420 @@
+subject,subject_type,relation,object,object_type,confidence,provenance
+Canvas Pages,PageType,IS_A,Page Type,Meta,0.99,Page 6
+Responsive Pages,PageType,IS_A,Page Type,Meta,0.99,Page 6
+Grid Pages,PageType,IS_A,Page Type,Meta,0.98,Page 6
+Chart,WidgetType,SUPPORTS,Canvas Pages,PageType,0.95,Page 6
+Chart,WidgetType,SUPPORTS,Responsive Pages,PageType,0.95,Page 6
+Table,WidgetType,SUPPORTS,Canvas Pages,PageType,0.95,Page 6-7
+Table,WidgetType,SUPPORTS,Responsive Pages,PageType,0.95,Page 6-7
+Geo Map,WidgetType,SUPPORTS,Canvas Pages,PageType,0.95,Page 6
+Geo Map,WidgetType,SUPPORTS,Responsive Pages,PageType,0.95,Page 6
+R Visualization,WidgetType,SUPPORTS,Story,Feature,0.92,Page 9
+Input Controls,WidgetType,SUPPORTS,Story,Feature,0.94,Page 9
+Linked Widgets Diagram,Feature,DESCRIBES,Widget relationships,Concept,0.95,Page 11
+Linked Widgets Diagram,Feature,DEPENDS_ON,Widget Engine,Feature,0.80,inferred
+Assets Panel,Feature,PROVIDES,DragAndDrop UX,Capability,0.85,Page 10
+Copy and Paste,Feature,DEPENDS_ON,Assets Panel,Feature,0.85,Page 11
+Optimized Design Experience,Feature,CONTAINS,Additional Widgets,Feature,0.96,Page 10
+Optimized Design Experience,Feature,CONTAINS,Composites,Feature,0.96,Page 10
+Optimized Design Experience,Feature,CONTAINS,Custom Widgets,Feature,0.96,Page 10
+Scripting API,Feature,DEPENDS_ON,Script Editor,Feature,0.95,Page 11
+Scripting API,Feature,ENABLES,Widget Scripting,Capability,0.94,Page 11
+Widget Engine,Feature,CONTAINS,Chart,WidgetType,0.90,inferred
+Widget Engine,Feature,CONTAINS,Table,WidgetType,0.90,inferred
+Widget Engine,Feature,CONTAINS,Geo Map,WidgetType,0.90,inferred
+SectionWidget,WidgetType,SUPPORTS,Canvas Pages,PageType,0.60,user-example
+SectionWidget,WidgetType,ONLY_FOR,Canvas Pages,PageType,0.60,user-example
+SectionWidget,WidgetType,DEPENDS_ON,Widget Engine,Feature,0.70,inferred
+Data Action Starter,Feature,TRIGGERS,Data Action,Feature,0.95,Page 28
+Multi Action,Feature,CONTAINS,Data Action Step,Feature,0.94,Page 27
+Value Driver Trees,Feature,USES,Modeler,Feature,0.94,Page 8
+Value Driver Trees,Feature,APPLIES_TO,Planning,Feature,0.94,Page 8
+Linked Analysis,Feature,DEPENDS_ON,Filters,Capability,0.92,Page 7
+Story Templates,Feature,PART_OF,Story Engine,Feature,0.95,Page 7
+Story Engine,Feature,CONTAINS,Page Types,Feature,0.95,Page 7
+Performance Insights,Feature,PROVIDES,Loading Sequence Metrics,Capability,0.92,Page 11
+Story,Feature,CONTAINS,Canvas Pages,PageType,0.98,Page 5-6
+Story,Feature,CONTAINS,Responsive Pages,PageType,0.98,Page 5-6
+Story,Feature,CONTAINS,Grid Pages,PageType,0.98,Page 6
+Story,Feature,SUPPORTS,Bookmarking,Capability,0.95,Page 7
+Story,Feature,SUPPORTS,Filtering,Capability,0.95,Page 7
+Story,Feature,SUPPORTS,Story Templates,Feature,0.95,Page 7
+Optimized View Mode,Feature,IMPROVES,Dashboard Performance,Capability,0.90,Page 7
+Optimized Design Experience,Feature,PROVIDES,Better Story Design,Capability,0.95,Page 7
+View Time Toolbar,Feature,PROVIDES,Quick Access,Capability,0.90,Page 7
+Dynamic Text,WidgetType,RESPONDS_TO,Data Interaction,Capability,0.92,Page 6
+Story-Defined Thresholds,Feature,COMPARES,Measures,Concept,0.93,Page 7
+Story-Defined Thresholds,Feature,DISPLAYS,Threshold Legend,Capability,0.92,Page 7
+Background Images,Feature,APPLIES_TO,Responsive Pages,PageType,0.90,Page 7
+Background Images,Feature,APPLIES_TO,Responsive Lanes,Concept,0.90,Page 7
+Analytic Applications,Feature,CREATED_BY,Analytics Designer,Tool,0.98,Page 12
+Analytic Applications,Feature,SUPPORTS,Data Analysis,Capability,0.95,Page 12
+Analytic Applications,Feature,SUPPORTS,Data Planning,Capability,0.95,Page 12
+Analytic Applications,Feature,USES,Scripting API,Feature,0.95,Page 12
+Widgets,Feature,PART_OF,Analytic Applications,Feature,0.95,Page 13
+Widgets,Feature,INCLUDES,Data Visualization,Category,0.95,Page 13
+Widgets,Feature,INCLUDES,Data Planning,Category,0.95,Page 13
+Widgets,Feature,INCLUDES,Filtering,Category,0.95,Page 13
+Widgets,Feature,INCLUDES,Layout,Category,0.95,Page 13
+Custom Widgets,Feature,EXTENDS,Analytic Applications,Feature,0.93,Page 13
+Linked Widgets Diagram,Feature,VISUALIZES,Widget Relationships,Concept,0.95,Page 13
+Bookmark,Feature,CAPTURES,Application State,Concept,0.93,Page 13
+Theme,Feature,DEFINES,Application Style,Concept,0.93,Page 13
+Planning Applications,Feature,SUPPORTS,Manual Data Entry,Capability,0.94,Page 13
+Planning Applications,Feature,SUPPORTS,Automated Data Entry,Capability,0.94,Page 13
+Smart Capabilities,Feature,INCLUDES,Data Change Insights,Feature,0.92,Page 13
+Smart Capabilities,Feature,INCLUDES,Smart Insights,Feature,0.92,Page 13
+Smart Capabilities,Feature,INCLUDES,Smart Discovery,Feature,0.92,Page 13
+Smart Capabilities,Feature,INCLUDES,Search to Insight,Feature,0.92,Page 13
+Smart Capabilities,Feature,INCLUDES,Smart Grouping,Feature,0.92,Page 13
+Export Options,Feature,SUPPORTS,PDF Export,Capability,0.93,Page 13
+Scheduling Publication,Feature,DISTRIBUTES,PDFs,Capability,0.93,Page 13
+Script Editor,Feature,CREATES,Interactive Applications,Capability,0.94,Page 14
+Script Objects,Feature,PART_OF,Scripting Support,Feature,0.92,Page 14
+Global Variables,Feature,PART_OF,Scripting Support,Feature,0.92,Page 14
+Timer,Feature,DELAYS,Script Call,Capability,0.93,Page 14
+OData,Feature,CREATES,OData Service,Capability,0.93,Page 14
+Error Panel,Feature,DISPLAYS,Script Errors,Capability,0.93,Page 14
+Debug Mode,Feature,HELPS,Find Script Errors,Capability,0.93,Page 14
+Data Analyzer,Feature,PROVIDES,Ad-hoc Analysis,Capability,0.95,Page 15
+Data Analyzer,Feature,ACCESSES,SAP BW Queries,DataSource,0.94,Page 15
+Data Analyzer,Feature,ACCESSES,SAP HANA Views,DataSource,0.94,Page 15
+Data Analyzer,Feature,ACCESSES,SAP Datasphere Models,DataSource,0.94,Page 15
+Data Analyzer,Feature,ACCESSES,SAC Models,DataSource,0.94,Page 15
+Data Analyzer,Feature,DISPLAYS,Pivot Table,Visualization,0.93,Page 15
+Data Analyzer,Feature,DISPLAYS,Charts,Visualization,0.93,Page 15
+Insights,Feature,SAVES,Presentation State,Concept,0.92,Page 15
+URL API,Feature,LAUNCHES,Data Analyzer,Feature,0.91,Page 15
+Model,Feature,REPRESENTS,Business Data,Concept,0.98,Page 16
+Model,Feature,DEFINES,Measures,Concept,0.97,Page 16
+Model,Feature,DEFINES,Dimensions,Concept,0.97,Page 16
+Account Model,Feature,HAS,Single Default Measure,Concept,0.95,Page 16
+Account Model,Feature,HAS,Account Dimension,Concept,0.95,Page 16
+Account Model,Feature,IMPORTS_FROM,SAP BPC,DataSource,0.93,Page 16
+Other Model Configuration,Feature,ALLOWS,Calculated Measures,Concept,0.94,Page 16
+Other Model Configuration,Feature,ALLOWS,Currency Conversion,Concept,0.94,Page 16
+Hierarchies,Feature,STRUCTURES,Data,Concept,0.95,Page 16
+Hierarchies,Feature,INCLUDES,Level-based,Type,0.94,Page 16
+Hierarchies,Feature,INCLUDES,Parent-child,Type,0.94,Page 16
+Model Security,Feature,RESTRICTS,Model Access,Capability,0.94,Page 16
+Dimension Security,Feature,RESTRICTS,Value Access,Capability,0.93,Page 16
+Live Models,Feature,CONNECTS_TO,SAP HANA,DataSource,0.94,Page 16
+Live Models,Feature,CONNECTS_TO,SAP S/4 HANA,DataSource,0.94,Page 16
+Live Models,Feature,CONNECTS_TO,BW,DataSource,0.94,Page 16
+Points of Interest,Feature,VISUALIZES,Geographic Details,Concept,0.92,Page 17
+Points of Interest,Feature,USES,Esri Shapefiles,DataSource,0.91,Page 17
+Currency Conversion Measures,Feature,CONVERTS,Currency Data,Capability,0.93,Page 17
+Preparing Data,Feature,CLEANS,Raw Data,Capability,0.94,Page 18
+Combine Data,Feature,JOINS,Data Sources,Capability,0.93,Page 18
+Location Dimensions,Feature,ENABLES,Geo Maps,Capability,0.92,Page 18
+Smart Transformations,Feature,SUGGESTS,Transformations,Capability,0.91,Page 18
+Calculated Columns,Feature,ADDS,Measures,Concept,0.92,Page 18
+Calculated Columns,Feature,ADDS,Dimensions,Concept,0.92,Page 18
+Formulas,Feature,PERFORMS,Calculations,Capability,0.95,Page 19
+Functions,Feature,BUILDS,Calculated Dimension,Capability,0.92,Page 19
+Conditional Formulas,Feature,USES,If Then Statements,Concept,0.91,Page 19
+Variables,Feature,DEFINES,Adjustable Values,Concept,0.92,Page 19
+Calculations,Feature,CREATES,New Measures,Concept,0.94,Page 20
+Calculated Measures,Feature,PERFORMS,Mathematical Operations,Capability,0.93,Page 20
+Restricted Measures,Feature,USES,Selected Values,Concept,0.92,Page 20
+Calculated Dimensions,Feature,COMBINES,Dimensions,Concept,0.91,Page 20
+Planning,Feature,CREATES,Model Data,Capability,0.95,Page 21
+Version Management,Feature,MAINTAINS,Multiple Versions,Capability,0.94,Page 21
+Data Entry,Feature,ALLOWS,Manual Entry,Capability,0.93,Page 21
+Structured Allocations,Feature,ALLOCATES,Values,Capability,0.92,Page 21
+Data Actions,Feature,INITIATES,Copy Paste Actions,Capability,0.93,Page 21
+Multi Actions,Feature,LINKS,Action Sequence,Capability,0.92,Page 21
+Compass,Feature,SIMULATES,Business Events,Capability,0.91,Page 21
+Value Driver Trees,Feature,VISUALIZES,Driver KPI Relationship,Capability,0.92,Page 21
+Input Tasks,Feature,ASSIGNS,Story Page,Capability,0.91,Page 21
+Validation Rules,Feature,RESTRICTS,Data Entry,Capability,0.90,Page 21
+Data Locking,Feature,PREVENTS,Value Changes,Capability,0.91,Page 21
+Allocation Process,Feature,DISTRIBUTES,Source Values,Capability,0.93,Page 22
+Allocation Steps,Feature,PART_OF,Data Action,Feature,0.92,Page 22
+Allocation Rules,Feature,GOVERNS,Allocation Steps,Feature,0.91,Page 22
+Compass,Feature,USES,Monte Carlo Simulation,Method,0.93,Page 23
+Simulations,Feature,ANSWERS,Business Questions,Capability,0.92,Page 23
+Private Scenarios,Feature,ACCESSIBLE_BY,Creator Only,Concept,0.91,Page 23
+Drivers,Feature,CONFIGURED_WITH,Probability Distribution,Concept,0.90,Page 23
+Public Scenarios,Feature,ACCESSIBLE_BY,All Users,Concept,0.91,Page 23
+Calendar,Feature,ORGANIZES,Workflows,Capability,0.94,Page 24
+List Workspace,Feature,DISPLAYS,Gantt Chart,Visualization,0.92,Page 24
+Calendar Workspace,Feature,DISPLAYS,Calendar Layout,Visualization,0.92,Page 24
+Tasks,Feature,INCLUDES,Composite Tasks,Type,0.93,Page 24
+Tasks,Feature,INCLUDES,General Tasks,Type,0.93,Page 24
+Tasks,Feature,INCLUDES,Review Tasks,Type,0.93,Page 24
+Tasks,Feature,INCLUDES,Data Locking Tasks,Type,0.93,Page 24
+Tasks,Feature,INCLUDES,Data Action Tasks,Type,0.93,Page 24
+Tasks,Feature,INCLUDES,Multi Action Tasks,Type,0.93,Page 24
+Processes,Feature,AGGREGATES,Events,Concept,0.92,Page 25
+Templates,Feature,REUSES,Calendar Processes,Feature,0.91,Page 25
+Multi Actions,Feature,ORCHESTRATES,Operations,Capability,0.93,Page 27
+Data Action Step,Feature,RUNS,Data Action,Feature,0.92,Page 27
+Version Management Step,Feature,PUBLISHES,Version,Capability,0.91,Page 27
+Predictive Step,Feature,RUNS,Forecast Scenario,Capability,0.90,Page 27
+Dataset,Feature,COLLECTION_OF,Data,Concept,0.95,Page 27
+Dataset Overview Panel,Feature,DISPLAYS,Dimensions,Concept,0.92,Page 27
+Dataset Overview Panel,Feature,DISPLAYS,Measures,Concept,0.92,Page 27
+Data Actions,Feature,MAKES,Structured Changes,Capability,0.94,Page 28
+Copy Steps,Feature,COPIES,Model Values,Capability,0.93,Page 28
+Cross-Model Copy Steps,Feature,COPIES_BETWEEN,Models,Capability,0.92,Page 28
+Allocation Step,Feature,PART_OF,Data Action,Feature,0.91,Page 28
+AI for Planning Analytics,Feature,IMPROVES,Business Decisions,Capability,0.93,Page 29
+Just Ask,Feature,SEARCHES,Data,Capability,0.92,Page 29
+Smart Discovery,Feature,GENERATES,Visualizations,Capability,0.91,Page 29
+Smart Insights,Feature,PROVIDES,Chart Information,Capability,0.90,Page 29
+Smart Grouping,Feature,GROUPS,Data Points,Capability,0.89,Page 29
+Search to Insight,Feature,FINDS,Key Insights,Capability,0.90,Page 29
+Smart Predict,Feature,USES,Machine Learning,Method,0.93,Page 29
+Classification,PredictiveScenario,TYPE_OF,Predictive Scenario,Meta,0.92,Page 29
+Regression,PredictiveScenario,TYPE_OF,Predictive Scenario,Meta,0.92,Page 29
+Times Series,PredictiveScenario,TYPE_OF,Predictive Scenario,Meta,0.92,Page 29
+SAP Digital Boardroom,Feature,PROVIDES,Interactive Presentation,Capability,0.94,Page 30
+Agenda,Feature,PRESENTS,Linear Order,Capability,0.92,Page 30
+Dashboard,Feature,PRESENTS,Freeform,Capability,0.92,Page 30
+Mobile App,Feature,PROVIDES,Mobile Access,Capability,0.95,Page 31
+Single Sign-On,Feature,SECURES,Access,Capability,0.94,Page 31
+Stories On Mobile,Feature,DISPLAYS,Stories,Capability,0.93,Page 31
+Digital Boardroom on Mobile,Feature,DISPLAYS,Presentations,Capability,0.92,Page 31
+Analytics Hub,Feature,MANAGES,Enterprise Access,Capability,0.94,Page 32
+Viewing Assets,Feature,DISPLAYS,Asset Catalog,Capability,0.93,Page 32
+Translation,Feature,SUPPORTS,Multilingual Content,Capability,0.94,Page 33
+Security,Feature,PROVIDES,Data Protection,Capability,0.95,Page 34
+User Management,Feature,MANAGES,Users,Capability,0.94,Page 34
+SSO Authentication,Feature,SECURES,Application Access,Capability,0.93,Page 35
+Role Management,Feature,MANAGES,Permissions,Capability,0.92,Page 35
+Content Network,Feature,SHARES,Content Packages,Capability,0.93,Page 35
+Public Content,Feature,PROVIDES,Sample Content,Capability,0.92,Page 35
+Private Content,Feature,ENABLES,Content Transfer,Capability,0.91,Page 35
+Connections,Feature,CONNECTS_TO,Data Sources,Capability,0.95,Page 36
+Live Data Connections,Feature,TYPE_OF,Connection,Meta,0.94,Page 36
+Import Data Connections,Feature,TYPE_OF,Connection,Meta,0.94,Page 36
+Administration,Feature,CONFIGURES,System,Capability,0.94,Page 37
+System Configuration,Feature,MANAGES,Settings,Capability,0.93,Page 37
+Data Source Configuration,Feature,MANAGES,Remote Systems,Capability,0.92,Page 37
+Collaboration,Feature,OPTIMIZES,Group Decisions,Capability,0.92,Page 38
+Files,Feature,MANAGES,Documents,Capability,0.91,Page 38
+Catalog,Feature,CENTRALIZES,Content Access,Capability,0.92,Page 38
+Chart,WidgetType,DISPLAYS,Bar Chart,ChartType,0.95,Page 6
+Chart,WidgetType,DISPLAYS,Line Chart,ChartType,0.95,Page 6
+Chart,WidgetType,DISPLAYS,Pie Chart,ChartType,0.95,Page 6
+Chart,WidgetType,DISPLAYS,Waterfall Chart,ChartType,0.95,Page 6
+Chart,WidgetType,DISPLAYS,Time Series Chart,ChartType,0.95,Page 6
+Table,WidgetType,SUPPORTS,Budgeting,TableType,0.93,Page 7
+Table,WidgetType,SUPPORTS,Forecasting,TableType,0.93,Page 7
+Geo Map,WidgetType,DISPLAYS,Bubble Layer,LayerType,0.92,Page 6
+Geo Map,WidgetType,DISPLAYS,Point of Interest Layer,LayerType,0.92,Page 6
+Geo Map,WidgetType,DISPLAYS,Heat Map Layer,LayerType,0.92,Page 6
+Geo Map,WidgetType,DISPLAYS,Choropleth Layer,LayerType,0.92,Page 6
+Geo Map,WidgetType,DISPLAYS,Feature Layer,LayerType,0.92,Page 6
+Geo Map,WidgetType,DISPLAYS,Flow Layer,LayerType,0.92,Page 6
+Objects,WidgetType,DISPLAYS,Clocks,ObjectType,0.90,Page 6
+Objects,WidgetType,DISPLAYS,RSS Feeds,ObjectType,0.90,Page 6
+Objects,WidgetType,DISPLAYS,Web Pages,ObjectType,0.90,Page 6
+Story Filters,Feature,NARROWS,Analysis Scope,Capability,0.93,Page 7
+Page Filters,Feature,NARROWS,Page Scope,Capability,0.93,Page 7
+Bookmarking,Feature,SAVES,Story State,Capability,0.92,Page 7
+Recommended Comparisons,Feature,SUGGESTS,Comparisons,Capability,0.90,Page 10
+Linked Analysis Drilling,Feature,CHANGES,Chart Hierarchy,Capability,0.89,Page 10
+Unrestricted Drilling,Feature,DRILLS,Any Level,Capability,0.88,Page 10
+Multi-Dimensional Sorting,Feature,SORTS,Multiple Dimensions,Capability,0.89,Page 10
+Composites,Feature,COMBINES,Widgets,Capability,0.91,Page 10
+Custom Add-Ons,Feature,EXTENDS,Widget Functionality,Capability,0.90,Page 10
+Outline Panel,Feature,MANAGES,Story Structure,Capability,0.91,Page 11
+Theme,Feature,DEFINES,Story Style,Capability,0.90,Page 11
+CSS Class,Feature,DEFINES,Widget Style,Capability,0.89,Page 11
+Data Change Insights,Feature,NOTIFIES,Significant Changes,Capability,0.90,Page 11
+Performance Recommendations,Feature,OPTIMIZES,Story Design,Capability,0.91,Page 11
+Video Data Story,Feature,CREATES,Short Videos,Capability,0.88,Page 11
+Script Objects,Feature,ORGANIZES,Reusable Code,Capability,0.90,Page 11
+Global Variables,Feature,SHARES,Data Across Widgets,Capability,0.89,Page 11
+Automated Refactoring,Feature,UPDATES,Script References,Capability,0.88,Page 11
+Pattern-based Functions,Feature,GENERATES,Common Code,Capability,0.87,Page 11
+Timer,Feature,SCHEDULES,Script Execution,Capability,0.89,Page 12
+OData,Feature,PERFORMS,Backend Actions,Capability,0.88,Page 12
+Text Pool,Feature,TRANSLATES,Script Text,Capability,0.87,Page 12
+Embedding Business Applications,Feature,ENABLES,Message Communication,Capability,0.86,Page 12
+Reference List,Feature,TRACKS,Element Usage,Capability,0.88,Page 12
+Integration with SAP Datasphere,Feature,BUILDS,Applications in Spaces,Capability,0.90,Page 14
+Mobile Browser Support,Feature,SUPPORTS,Safari on iPad,Platform,0.85,Page 14
+Mobile App Support,Feature,SUPPORTS,iOS App,Platform,0.90,Page 14
+Mobile App Support,Feature,SUPPORTS,Android App,Platform,0.90,Page 14
+Copy and Paste,Feature,TRANSFERS,Widgets Between Stories,Capability,0.89,Page 14
+URL API Support,Feature,LAUNCHES,Data Analyzer with Parameters,Capability,0.87,Page 15
+Filters and Variables,Feature,PROMPTS,User Input,Capability,0.88,Page 15
+Share and Export,Feature,CREATES,Excel Files,FileType,0.87,Page 15
+Share and Export,Feature,CREATES,PDF Files,FileType,0.87,Page 15
+Share and Export,Feature,CREATES,CSV Files,FileType,0.87,Page 15
+Rebuilding Model,Feature,MODIFIES,Acquired Data Models,Capability,0.86,Page 17
+Translation Support,Feature,TRANSLATES,Model Metadata,Capability,0.85,Page 17
+Import Export Options,Feature,SCHEDULES,Recurring Operations,Capability,0.88,Page 17
+Deleting Private Versions,Feature,CLEANS_UP,Model Data,Capability,0.85,Page 17
+Recommended Planning Area,Feature,LIMITS,Data Size,Capability,0.86,Page 17
+Structure View,Feature,VISUALIZES,Star Schema,Visualization,0.87,Page 17
+Data Foundation View,Feature,DISPLAYS,Fact Table,Visualization,0.87,Page 17
+Unpivot Transform,Feature,TRANSPOSES,Columns to Rows,Capability,0.86,Page 18
+Remove Duplicate Rows,Feature,CLEANS,Dataset,Capability,0.85,Page 18
+Exception Aggregation,Feature,PERFORMS,Post-calculation Aggregation,Capability,0.86,Page 19
+Difference From,Feature,CALCULATES,Time Period Difference,Capability,0.85,Page 20
+Date Difference,Feature,CALCULATES,Time Interval,Capability,0.85,Page 20
+Aggregation,Feature,COMPUTES,Statistical Values,Capability,0.86,Page 20
+Forecast Calculations,Feature,COMBINES,Actual and Forecast Data,Capability,0.85,Page 20
+Predictive Planning Scenarios,Feature,FORECASTS,Planning Data,Capability,0.86,Page 22
+Predictive Forecasts in Tables,Feature,FORECASTS,Cell Values,Capability,0.85,Page 22
+Flexible Start Conditions,Feature,CONTROLS,Event Timing,Capability,0.85,Page 25
+Recurrence,Feature,REPEATS,Task Execution,Capability,0.86,Page 25
+Generate Tasks with Wizard,Feature,CREATES,Organizational Tasks,Capability,0.84,Page 25
+Edit Multiple Events,Feature,MODIFIES,Bulk Events,Capability,0.83,Page 25
+Context,Feature,APPLIES,Model Filters,Capability,0.84,Page 25
+Work Files,Feature,ATTACHES,Stories and Applications,Capability,0.85,Page 25
+Scheduled Publications,Feature,VIEWS,Distribution Schedule,Capability,0.84,Page 26
+Working Day Calendar,Feature,SCHEDULES,Working Days Only,Capability,0.85,Page 26
+Calendar Highlights,Feature,DISPLAYS,Task Summary,Capability,0.84,Page 26
+Exporting Calendar Tasks,Feature,CREATES,ICS Files,FileType,0.83,Page 26
+Integration with Microsoft Tools,Feature,DISPLAYS_IN,Outlook,Tool,0.85,Page 26
+Integration with Microsoft Tools,Feature,DISPLAYS_IN,Teams,Tool,0.85,Page 26
+API for External Access,Feature,ENABLES,External Integration,Capability,0.84,Page 26
+Notifications,Feature,SENDS,Email Alerts,Capability,0.85,Page 26
+Calendar Admin Mode,Feature,MANAGES,All Tenant Events,Capability,0.86,Page 26
+Data Import Step,Feature,IMPORTS,External Data,Capability,0.84,Page 27
+API Step,Feature,INTEGRATES,External Applications,Capability,0.83,Page 27
+PaPM Integration Step,Feature,RUNS,Remote Activity,Capability,0.82,Page 27
+Data Locking Step,Feature,SETS,Data Locks,Capability,0.84,Page 27
+Toggle Between Views,Feature,SWITCHES,Story and Data Views,Capability,0.85,Page 27
+Embedded Data Action Step,Feature,EXECUTES,Nested Data Action,Capability,0.84,Page 28
+Conversion Step,Feature,APPLIES,Currency Conversion,Capability,0.83,Page 28
+Advanced Formulas Step,Feature,CREATES,Complex Calculations,Capability,0.85,Page 28
+Parameters,Feature,CUSTOMIZES,Data Action Execution,Capability,0.86,Page 28
+Data Action Tracing,Feature,DEBUGS,Data Action Execution,Capability,0.84,Page 28
+Variable Contributions Report,Feature,ANALYZES,Influence on Target,Capability,0.83,Page 29
+Confusion Matrix,Feature,ASSESSES,Model Performance,Capability,0.84,Page 29
+Profit Simulation,Feature,ESTIMATES,Expected Profit,Capability,0.82,Page 29
+Performance Curves,Feature,COMPARES,Model Performance,Capability,0.83,Page 30
+Predicted vs Actual Chart,Feature,VISUALIZES,Prediction Accuracy,Visualization,0.84,Page 30
+Forecast vs Actual Graph,Feature,VISUALIZES,Forecast Accuracy,Visualization,0.84,Page 30
+Lagged Predictors Contribution,Feature,IDENTIFIES,Temporal Influence,Capability,0.82,Page 30
+Multi-Column Segmentation,Feature,CREATES,Segment Forecasts,Capability,0.81,Page 30
+Annotations,Feature,ADDS,Drawing and Text,Capability,0.84,Page 31
+Share and Collaborate,Feature,DISTRIBUTES,Content Links,Capability,0.85,Page 31
+Notifications Management,Feature,MANAGES,In-App Alerts,Capability,0.84,Page 31
+Mobile Application Management,Feature,PROVISIONS,Mobile Apps,Capability,0.83,Page 32
+SAP Analytics Cloud iOS SDK,Feature,BUILDS,Custom Mobile Apps,Capability,0.82,Page 32
+Search to Insight on Mobile,Feature,QUERIES,Models on Mobile,Capability,0.83,Page 32
+HANA Variables,Feature,USES,Input Parameters,Capability,0.84,Page 32
+Story Metadata Translation,Feature,TRANSLATES,Metadata on Mobile,Capability,0.82,Page 32
+Creating Editing Validating,Feature,MANAGES,Asset Content,Capability,0.84,Page 32
+Managing Structure and Design,Feature,CONFIGURES,Hub Layout,Capability,0.83,Page 32
+Consulting Usage Statistics,Feature,MONITORS,Hub Usage,Capability,0.85,Page 33
+Downloading Hub Data,Feature,EXPORTS,Organization Data,Capability,0.82,Page 33
+Uploading Elements,Feature,IMPORTS,Hub Components,Capability,0.81,Page 33
+Hub Mobile Access,Feature,ACCESSES,Hub Anywhere,Capability,0.84,Page 33
+Managing Users,Feature,ADMINISTERS,User Roles,Capability,0.85,Page 33
+Multilingual Content Support,Feature,SUPPORTS,Multiple Languages,Capability,0.86,Page 33
+Enabling Story for Translation,Feature,MARKS,Story for Translation,Capability,0.85,Page 33
+Enabling Model for Translation,Feature,MARKS,Model for Translation,Capability,0.84,Page 33
+Translator Role,Feature,MANAGES,Translations,Capability,0.85,Page 33
+Translation Dashboard,Feature,TRACKS,Translation Status,Capability,0.84,Page 34
+Data Access Language,Feature,SELECTS,Source Language,Capability,0.83,Page 34
+Import Export Translation,Feature,TRANSFERS,XLIFF Files,FileType,0.84,Page 34
+All Strings Download,Feature,EXTRACTS,All Translatable Text,Capability,0.83,Page 34
+Outstanding Strings Download,Feature,EXTRACTS,Modified Text,Capability,0.82,Page 34
+Editing Translated Text,Feature,MODIFIES,Translations,Capability,0.84,Page 34
+Data Access Control,Feature,SETS,Read Write Permissions,Capability,0.85,Page 35
+File Permission,Feature,MANAGES,Shared File Access,Capability,0.84,Page 35
+Audit Logs,Feature,RECORDS,Security Events,Capability,0.86,Page 35
+Content Deployment,Feature,TRANSFERS,Content Packages,Capability,0.85,Page 35
+System Monitoring,Feature,TRACKS,System Status,Capability,0.86,Page 35
+Import Workflow,Feature,GUIDES,Content Import,Capability,0.84,Page 35
+Scheduling Updates,Feature,AUTOMATES,Content Updates,Capability,0.83,Page 35
+Overwrite Options,Feature,MANAGES,Duplicate Content,Capability,0.82,Page 35
+Sharing Settings,Feature,CONTROLS,Content Access,Capability,0.84,Page 36
+Buy and Import Content,Feature,PURCHASES,SAP App Centre Content,Capability,0.83,Page 36
+Live Data Connections,Feature,ACCESSES,Real-time Data,Capability,0.86,Page 36
+Import Data Connections,Feature,REPLICATES,Cloud Data,Capability,0.86,Page 36
+SAP HANA Connection,DataSource,TYPE_OF,Live Data Connection,Meta,0.85,Page 36
+SAP HANA Cloud Connection,DataSource,TYPE_OF,Live Data Connection,Meta,0.85,Page 36
+SAP S/4 HANA Connection,DataSource,TYPE_OF,Live Data Connection,Meta,0.85,Page 36
+SAP BW Connection,DataSource,TYPE_OF,Live Data Connection,Meta,0.85,Page 36
+SAP BPC Embedded Connection,DataSource,TYPE_OF,Live Data Connection,Meta,0.84,Page 37
+SAP Universes Connection,DataSource,TYPE_OF,Live Data Connection,Meta,0.84,Page 37
+SAP Datasphere Connection,DataSource,TYPE_OF,Live Data Connection,Meta,0.85,Page 37
+Google BigQuery Connection,DataSource,TYPE_OF,Import Data Connection,Meta,0.84,Page 37
+Google Drive Connection,DataSource,TYPE_OF,Import Data Connection,Meta,0.84,Page 37
+OData Services Connection,DataSource,TYPE_OF,Import Data Connection,Meta,0.84,Page 37
+Salesforce Connection,DataSource,TYPE_OF,Import Data Connection,Meta,0.83,Page 37
+SQL Connection,DataSource,TYPE_OF,Import Data Connection,Meta,0.85,Page 37
+R Configuration,Feature,CONFIGURES,External R Environment,Capability,0.82,Page 37
+App Integration,Feature,MANAGES,OAuth Clients,Capability,0.83,Page 37
+Notifications Configuration,Feature,DELIVERS,System Events,Capability,0.84,Page 37
+Appearance Customization,Feature,CUSTOMIZES,Homepage Appearance,Capability,0.82,Page 37
+Business Intelligence,License,PROVIDES,BI Functionality,Capability,0.90,Page 40
+Planning License,License,PROVIDES,Planning Functionality,Capability,0.90,Page 40
+Custom License,License,PROVIDES,Custom Functionality,Capability,0.89,Page 40
+Smart Assist,Feature,POWERED_BY,SAP Predictive Technology,Technology,0.88,Page 40
+SAP Digital Boardroom License,License,INCLUDES,Digital Boardroom,Feature,0.87,Page 40
+SAP Analytics Hub License,License,INCLUDES,Analytics Hub,Feature,0.87,Page 40
+Basic Connectivity,Feature,CONNECTS_TO,Excel,DataSource,0.85,Page 40
+Basic Connectivity,Feature,CONNECTS_TO,CSV,DataSource,0.85,Page 40
+Basic Connectivity,Feature,CONNECTS_TO,Google Sheets,DataSource,0.85,Page 40
+Enterprise Connectivity,Feature,CONNECTS_TO,SAP HANA,DataSource,0.88,Page 40
+Enterprise Connectivity,Feature,CONNECTS_TO,SQL,DataSource,0.88,Page 40
+Enterprise Connectivity,Feature,CONNECTS_TO,OData Services,DataSource,0.88,Page 40
+Team Collaboration,Feature,ENABLES,Group Work,Capability,0.86,Page 40
+24/7 Support,Feature,PROVIDES,Continuous Support,Capability,0.90,Page 40
+Service Level Agreement,Feature,GUARANTEES,Service Quality,Capability,0.89,Page 40
+Google Chrome,Browser,SUPPORTS,Desktop Access,Platform,0.88,Page 41
+Microsoft Edge,Browser,SUPPORTS,Desktop Access,Platform,0.88,Page 41
+Browser Zoom,Requirement,REQUIRES,100 Percent Scale,Constraint,0.90,Page 41
+SAP Cloud Platform,Platform,HOSTS,SAP Analytics Cloud,Product,0.92,inferred
+SAP Business Technology Platform,Platform,FOUNDATION_FOR,SAP Analytics Cloud,Product,0.91,Page 4
+SAP BTP Neo Environment,Platform,DEPLOYMENT_OPTION,SAP Analytics Cloud,Product,0.88,Page 4
+SAP BTP Cloud Foundry Environment,Platform,DEPLOYMENT_OPTION,SAP Analytics Cloud,Product,0.88,Page 4
+Chart,WidgetType,DEPENDS_ON,Data Model,Concept,0.85,inferred
+Table,WidgetType,DEPENDS_ON,Data Model,Concept,0.85,inferred
+Story,Feature,USES,Model,Feature,0.90,inferred
+Analytic Applications,Feature,USES,Model,Feature,0.90,inferred
+Data Analyzer,Feature,QUERIES,Model,Feature,0.88,inferred
+Planning,Feature,MODIFIES,Model,Feature,0.89,inferred
+Smart Predict,Feature,ANALYZES,Dataset,Feature,0.87,inferred
+Value Driver Trees,Feature,VISUALIZES,Model Data,Capability,0.86,inferred
+Compass,Feature,SIMULATES,Model Scenarios,Capability,0.84,inferred
+Calendar,Feature,SCHEDULES,Planning Activities,Capability,0.85,inferred
+Translation,Feature,APPLIES_TO,Story,Feature,0.86,inferred
+Translation,Feature,APPLIES_TO,Model,Feature,0.86,inferred
+Security,Feature,PROTECTS,All Content,Capability,0.88,inferred
+Connections,Feature,REQUIRED_BY,Model,Feature,0.87,inferred
+Administration,Feature,CONFIGURES,All Features,Capability,0.85,inferred
+Live Data Connection,ConnectionType,REQUIRES,Data Source Connection,Requirement,0.88,inferred
+Import Data Connection,ConnectionType,CREATES,Local Copy,Concept,0.87,inferred
+Story Designer,Role,CREATES,Story,Feature,0.90,inferred
+Planner,Role,USES,Planning,Feature,0.89,inferred
+Analyst,Role,USES,Data Analyzer,Feature,0.88,inferred
+Administrator,Role,MANAGES,System,Capability,0.90,inferred
+Viewer,Role,VIEWS,Content,Capability,0.85,inferred
+Just Ask,Feature,USES,Natural Language Processing,Technology,0.85,inferred
+Smart Discovery,Feature,USES,Machine Learning,Technology,0.86,inferred
+Smart Insights,Feature,USES,Statistical Analysis,Technology,0.84,inferred
+Smart Predict,Feature,REQUIRES,Training Data,Requirement,0.85,inferred
+Predictive Scenarios,Feature,GENERATES,Predictions,Capability,0.87,inferred
+Classification Model,PredictiveScenario,PREDICTS,Categories,Capability,0.86,inferred
+Regression Model,PredictiveScenario,PREDICTS,Numeric Values,Capability,0.86,inferred
+Time Series Model,PredictiveScenario,FORECASTS,Future Values,Capability,0.86,inferred
+Story,Feature,EXPORTS_TO,PDF,FileType,0.87,Page 9
+Story,Feature,EXPORTS_TO,PowerPoint,FileType,0.86,Page 9
+Story,Feature,SHARES_VIA,Email,Channel,0.85,Page 9
+Story,Feature,SHARES_VIA,URL,Channel,0.86,Page 9
+Model,Feature,IMPORTS_FROM,Excel,DataSource,0.84,Page 16
+Model,Feature,IMPORTS_FROM,CSV,DataSource,0.84,Page 16
+Model,Feature,EXPORTS_TO,Excel,FileType,0.83,Page 17
+Planning,Feature,SUPPORTS,Collaboration,Capability,0.86,Page 21
+Data Action,Feature,AUTOMATES,Planning Tasks,Capability,0.85,Page 21
+Allocation,Feature,DISTRIBUTES,Budget,Capability,0.84,Page 22
+Calendar,Feature,ASSIGNS,Responsibilities,Capability,0.86,Page 24
+Calendar,Feature,TRACKS,Progress,Capability,0.85,Page 24
+Mobile App,Feature,SYNCHRONIZES,Cloud Data,Capability,0.88,Page 31
+SAP Analytics Cloud,Product,INTEGRATES_WITH,SAP Datasphere,Product,0.87,Page 14
+SAP Analytics Cloud,Product,INTEGRATES_WITH,SAP HANA,Product,0.88,Page 36
+SAP Analytics Cloud,Product,INTEGRATES_WITH,SAP S/4 HANA,Product,0.87,Page 36
+SAP Analytics Cloud,Product,INTEGRATES_WITH,SAP BW,Product,0.87,Page 36
+SAP Analytics Cloud,Product,CONNECTS_TO,Google BigQuery,Product,0.84,Page 37
+SAP Analytics Cloud,Product,CONNECTS_TO,Salesforce,Product,0.83,Page 37
